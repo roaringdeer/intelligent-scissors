@@ -54,6 +54,6 @@ def f_G(pixel):
 
 def calc_pixel_local_cost(pixel, neighbour_pixel, w_Z: float = 0.43, w_D: float = 0.43, w_G: float = 0.14):
     """
-    Realizes calculation: w_Z*f_Z + w_D*f_D + w_G*f_G
+    Executes calculation: w_Z*f_Z + w_D*f_D + w_G*f_G
     """
     return w_Z*f_Z(pixel) + w_D*f_D(pixel, neighbour_pixel) + w_G*f_G(pixel)
