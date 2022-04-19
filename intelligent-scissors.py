@@ -32,11 +32,11 @@ def image_show_process(image, clk_q, mouse_pos_q, image_shape):
 
     while True:
         # rysowanie po obrazie
-
+ 
         if cv2.waitKey(32) & 0xFF == ord(' '):
             break #przerwanie pętli po wciasnieciu q
 
-    mouse_pos_q.put(-1) # Kończy pętle w find_path
+    mouse_pos_q.put(None) # Kończy pętle w find_path
 
 def find_path(clk_q, mouse_pos_q, image_shape):
     print("Find path process starting")
@@ -44,13 +44,14 @@ def find_path(clk_q, mouse_pos_q, image_shape):
     mouse_pos = (0,0)
     path_shm = shared_memory.SharedMemory(name='PATH_SHM')
     path_array = np.ndarray(image_shape, dtype = np.uint8, buffer = path_shm.buf) 
-    while mouse_pos!=-1: # do zmiany na jakiś lepszy warunek?
+    while mouse_pos!=None: # do zmiany na jakiś lepszy warunek?
         try:
             mouse_pos = mouse_pos_q.get() # czeka aż będzie w kolejce coś do wyjęcia - myszka się ruszy
             clk_list.append(clk_q.get_nowait()) # czy w kolejce coś do wyjęcia, bez czekania
         except queue.Empty:
-            continue # kolejka clk_q pusta, nic się nie dzieje
-        # obliczenia, algorytm
+            # kolejka clk_q pusta, nic się nie dzieje
+            # obliczenia, algorytm
+            continue
     print(mouse_pos, clk_list)
 
 if __name__ == "__main__":
@@ -60,6 +61,7 @@ if __name__ == "__main__":
     clk_q = Queue()
     mouse_pos_q = Queue()
     image = cv2.imread(args.impath)
+    print(image.shape)
     image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     path_shm = shared_memory.SharedMemory(create=True, size=image_gray.size*8, name='PATH_SHM') #Rozmiaru obrazu, array na ścieżkę
     #cv2.imshow('f_Z', laplacian_zero_crossing(image_gray))

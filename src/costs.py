@@ -23,7 +23,14 @@ def laplacian_zero_crossing2(image):
                     z_c_image[i,j] = 1
     return z_c_image
 
-    
+
+def sobel_zero_crossing(image):
+    sobel_x = cv2.Sobel(image,cv2.CV_64F,1,0,ksize=3)
+    sobel_y = cv2.Sobel(image,cv2.CV_64F,0,1,ksize=3)
+    sobel_first_derivative = cv2.magnitude(sobel_x,sobel_y)
+    sobel_test = np.empty_like (sobel_first_derivative)
+    sobel_test[:] = sobel_first_derivative
+
 
 def laplacian_zero_crossing(image):
     kernel = np.array([[-1, -1, -1],[-1, 8, -1],[-1, -1, -1]])
@@ -56,4 +63,5 @@ def calc_pixel_local_cost(pixel, neighbour_pixel, w_Z: float = 0.43, w_D: float 
     """
     Executes calculation: w_Z*f_Z + w_D*f_D + w_G*f_G
     """
-    return w_Z*f_Z(pixel) + w_D*f_D(pixel, neighbour_pixel) + w_G*f_G(pixel)
+    # return w_Z*f_Z(pixel) + w_D*f_D(pixel, neighbour_pixel) + w_G*f_G(pixel)
+    return 1 # pixel[0] + pixel[1] + neighbour_pixel[0] + neighbour_pixel[1]
