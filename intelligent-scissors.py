@@ -50,8 +50,8 @@ def find_path(clk_q, mouse_pos_q, image_shape):
             clk_list.append(clk_q.get_nowait()) # czy w kolejce coś do wyjęcia, bez czekania
         except queue.Empty:
             # kolejka clk_q pusta, nic się nie dzieje
-            # obliczenia, algorytm
             continue
+        # obliczenia, algorytm
     print(mouse_pos, clk_list)
 
 if __name__ == "__main__":

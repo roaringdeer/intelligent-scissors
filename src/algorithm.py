@@ -1,7 +1,7 @@
 from typing import Tuple, Callable
 import numpy as np
 from time import sleep
-from costs import calc_pixel_local_cost
+from costs import *
 
 class GraphPath:
     pass
@@ -12,6 +12,9 @@ class LiveWire2D_Solver:
         self.cost_matrix = np.full(self.image.shape, np.inf) # macierz kosztow
         self.processed_matrix = np.full(self.image.shape, False) # macierz przetworzonych pikseli
         self.active_pixels = np.full(self.image.shape, False)
+
+        self.lzc = laplacian_zero_crossing(image)
+        self.gm = 1 - gradient(image)[0]
         # self.cost_func = cost_func
     
     def __get_pixel_neighbours(self, pixel):
@@ -31,9 +34,9 @@ class LiveWire2D_Solver:
         
         return output
 
-    def solve(self, start_pixel: Tuple, cost_func: Callable):
+    def solve(self, start_pixel: Tuple, cost_func: Callable): #TUTAJ
         # setup start pixel
-        self.active_pixels[start_pixel] = True
+        self.active_pixels[start_pixel] = True #Czy nie potrzeba zresetować?
         self.cost_matrix[start_pixel] = 0
         output = {}
         # while there are pixels to consider
