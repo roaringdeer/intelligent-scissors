@@ -12,14 +12,6 @@ def gradient(image):
     return grad, orientation
 
 
-# def sobel_zero_crossing(image):
-#     sobel_x = cv2.Sobel(image,cv2.CV_64F,1,0,ksize=3)
-#     sobel_y = cv2.Sobel(image,cv2.CV_64F,0,1,ksize=3)
-#     sobel_first_derivative = cv2.magnitude(sobel_x,sobel_y)
-#     sobel_test = np.empty_like (sobel_first_derivative)
-#     sobel_test[:] = sobel_first_derivative
-
-
 def laplacian_zero_crossing(image):
     kernel = np.array([[0, -1, 0],[-1, 4, -1],[0, -1, 0]])
     image = cv2.filter2D(src=image, ddepth=-1, kernel=kernel)
@@ -31,9 +23,11 @@ def laplacian_zero_crossing(image):
 def f_Z(pixel, lzc):
     return lzc[pixel[0]][pixel[1]]
 
+
 # Gradient Direction
 def f_D(pixel, neighbour_pixel):
     pass
+
 
 # Gradient Magnitude
 def f_G(gradient, p, q):
@@ -42,10 +36,6 @@ def f_G(gradient, p, q):
     else: 
         return gradient[q[0]][q[1]]
 
-# Tymczasowe
-def G(image):
-    sgrad, orient = gradient(image)
-    return 1- sgrad
 
 def calc_pixel_local_cost(pixel, neighbour_pixel, gradient, lzc, w_Z: float = 0.43, w_D: float = 0.43, w_G: float = 0.14):
     """

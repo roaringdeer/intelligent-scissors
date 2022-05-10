@@ -1,7 +1,7 @@
 from typing import Tuple, Callable
 import numpy as np
 from time import sleep
-from costs import *
+from src.costs import *
 
 class GraphPath:
     pass

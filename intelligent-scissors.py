@@ -6,14 +6,13 @@ from cv2 import waitKey
 from src.costs import *
 from src.algorithm import  *
 from multiprocessing import Process, shared_memory, Queue
+from time import sleep
 
 def get_args():
     parser = argparse.ArgumentParser('intelligent-scissors')
     parser.add_argument('impath', help='image path')
     parser.add_argument('-C')
     return parser.parse_args()
-
-mouse_pos = None
 
 def click_event_handler(event, x, y, flags, params):
     clk_list = params[0]
@@ -29,13 +28,14 @@ def image_show_process(image, clk_q, mouse_pos_q, image_shape):
     cv2.setMouseCallback('image', click_event_handler,(clk_q, mouse_pos_q))
     path_shm = shared_memory.SharedMemory(name='PATH_SHM')
     path_array = np.ndarray(image_shape, dtype = np.uint8, buffer = path_shm.buf) 
-
+    path_array = cv2.imread("image.png")
+    pos = (0,0)
     while True:
         # rysowanie po obrazie
- 
+        image_2 = cv2.addWeighted(image, 0.7, path_array, 0.3, 0)
+        cv2.imshow('image', image_2)
         if cv2.waitKey(32) & 0xFF == ord(' '):
-            break #przerwanie pętli po wciasnieciu q
-
+            break #przerwanie pętli po wciasnieciu spacji
     mouse_pos_q.put(None) # Kończy pętle w find_path
 
 def find_path(clk_q, mouse_pos_q, image_shape):
