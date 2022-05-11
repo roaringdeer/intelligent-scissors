@@ -46,7 +46,7 @@ if __name__ == "__main__":
         print("Processing points")
         image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         # uruchamianie algorytmu
-        # solver = LiveWire2D_Solver(image)
+        solver = LiveWire2D_Solver(image_gray)
         # m = solver.solve(mouse_clicks, calc_pixel_local_cost)
         # print(m)
 

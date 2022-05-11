@@ -7,8 +7,11 @@ def gradient(image):
     dy = scipy.ndimage.filters.convolve1d(np.int32(image), np.array([-1, 0, 1]), 0)
 
     grad = np.sqrt(dx**2 + dy**2)
-    grad = grad/np.amax(grad)
-    orientation = (dy, -dx)
+    grad = 1 - grad/np.amax(grad)
+    print(dx.shape)
+    print(dy.shape)
+    orientation = np.vstack(([dy.T], [-dx.T])).T
+    # orientation = (dy, -dx)
     return grad, orientation
 
 
@@ -23,11 +26,21 @@ def laplacian_zero_crossing(image):
 def f_Z(pixel, lzc):
     return lzc[pixel[0]][pixel[1]]
 
+def d_p(p, q, orientation):
+    return np.dot(orientation[tuple(p)], L(p, q, orientation))
+
+def d_q(p, q, orientation):
+    return np.dot(L(p, q, orientation), orientation[tuple(q)])
+
+def L(p, q, orientation):
+    if np.dot(orientation[tuple(p)], q - p) >= 0:
+        return q - p
+    else:
+        return p - q
 
 # Gradient Direction
-def f_D(pixel, neighbour_pixel):
-    pass
-
+def f_D(pixel, neighbour_pixel, orientation):
+    return (np.arccos(d_p(pixel, neighbour_pixel, orientation)) + np.arccos(d_q(pixel, neighbour_pixel, orientation)))/np.pi
 
 # Gradient Magnitude
 def f_G(gradient, p, q):

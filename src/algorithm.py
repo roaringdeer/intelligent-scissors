@@ -14,7 +14,8 @@ class LiveWire2D_Solver:
         self.active_pixels = np.full(self.image.shape, False)
 
         self.lzc = laplacian_zero_crossing(image)
-        self.gm = 1 - gradient(image)[0]
+        self.grad_mag, self.grad_orient = gradient(image)
+        print(f_D(np.array([1, 1]), np.array([1, 1]), self.grad_orient))
         # self.cost_func = cost_func
     
     def __get_pixel_neighbours(self, pixel):
