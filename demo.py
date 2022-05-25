@@ -6,6 +6,8 @@ from cv2 import waitKey
 from src.costs import *
 from src.algorithm import  *
 
+from newsrc.pathfinder import Pathfinder
+
 def get_args():
     parser = argparse.ArgumentParser('intelligent-scissors')
     parser.add_argument('impath', help='image path')
@@ -18,6 +20,7 @@ def click_event_handler(event, x, y, flags, params):
     #     mouse_pos.put((x,y))
     if event in [cv2.EVENT_LBUTTONDOWN, cv2.EVENT_RBUTTONDOWN]:
         mouse_clicks.append((x,y))
+
 
 if __name__ == "__main__":
     # SETUP
@@ -40,26 +43,29 @@ if __name__ == "__main__":
         if k==113 & 0xFF == ord('q'): # q - wyjście bez zapisywania
             break
     
-    cv2.destroyAllWindows()
+    # cv2.destroyAllWindows()
 
     if finished:
         print("Processing points")
         image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         # uruchamianie algorytmu
-        solver = LiveWire2D_Solver(image_gray)
-        m = solver.solve(mouse_clicks, calc_pixel_local_cost)
-        print(m)
+        # solver = LiveWire2D_Solver(image_gray)
+        # m = solver.solve(mouse_clicks, calc_pixel_local_cost)
+        # print(m)
+
+        pathfinder = Pathfinder(image_gray)
+        path = []
+        for i in range(len(mouse_clicks)-1):
+            path.extend(pathfinder.find_path(*mouse_clicks[i], *mouse_clicks[i+1]))
+        print(path)
 
         # ----- sumuluję otrzymaną maskę -----------
-        maska = cv2.imread("image.png")
-        maska = cv2.cvtColor(maska, cv2.COLOR_BGR2GRAY)
+        output = cv2.imread("image.png")
         # ------------------------------------------
 
-        ret, maskag = cv2.threshold(maska, 1, 255, cv2.THRESH_BINARY)
-        maska = cv2.cvtColor(maskag, cv2.COLOR_GRAY2RGBA)
-        maska[:,:,3] = maskag
-        image = cv2.cvtColor(image, cv2.COLOR_RGB2RGBA)
-        final = cv2.add(image, maska)
-        cv2.imshow("final",final)
+        for x, y in path:
+            output[x, y, :] = (255, 255, 0)
+
+        cv2.imshow("output",output)
         cv2.waitKey(0)
         cv2.destroyAllWindows()

@@ -54,8 +54,8 @@ def calc_pixel_local_cost(pixel, neighbour_pixel, gradient, lzc, w_Z: float = 0.
     """
     Executes calculation: w_Z*f_Z + w_D*f_D + w_G*f_G
     """
-    # return w_Z*f_Z(pixel, lzc) + w_D*f_D(pixel, neighbour_pixel) + w_G*f_G(gradient, pixel, neighbour_pixel)
-    return 1 # pixel[0] + pixel[1] + neighbour_pixel[0] + neighbour_pixel[1]
+    return w_Z*f_Z(pixel, lzc) + w_D*f_D(pixel, neighbour_pixel) + w_G*f_G(gradient, pixel, neighbour_pixel)
+    # return 1 # pixel[0] + pixel[1] + neighbour_pixel[0] + neighbour_pixel[1]
 
 
 if __name__ == "__main__":
