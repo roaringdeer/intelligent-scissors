@@ -43,15 +43,11 @@ if __name__ == "__main__":
         if k==113 & 0xFF == ord('q'): # q - wyjście bez zapisywania
             break
     
-    # cv2.destroyAllWindows()
+    cv2.destroyAllWindows()
 
     if finished:
         print("Processing points")
         image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        # uruchamianie algorytmu
-        # solver = LiveWire2D_Solver(image_gray)
-        # m = solver.solve(mouse_clicks, calc_pixel_local_cost)
-        # print(m)
 
         pathfinder = Pathfinder(image_gray)
         path = []
@@ -60,12 +56,11 @@ if __name__ == "__main__":
         print(path)
 
         # ----- sumuluję otrzymaną maskę -----------
-        output = cv2.imread("image.png")
         # ------------------------------------------
 
         for x, y in path:
-            output[x, y, :] = (255, 255, 0)
+            image_temp[x, y, :] = (255, 255, 0)
 
-        cv2.imshow("output",output)
+        cv2.imshow("output",image_temp)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
