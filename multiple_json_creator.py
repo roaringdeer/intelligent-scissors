@@ -7,14 +7,10 @@ def get_json(json_name, laplace, direction, magnitude):
         "laplace_w": laplace,
         "direction_w": direction,
         "magnitude_w": magnitude,
-        "local": 0.1,
-        "inner": 0.1,
-        "outer": 0.1,
         "laplace_kernels": [3, 5, 7],
         "gaussian_kernel": 5,
         "laplace_weights": [0.2, 0.3, 0.5],
         "maximum_cost": 255,
-        "snap_scale": 3
     }
 
     with open(json_name, 'w+') as f:
@@ -34,6 +30,6 @@ if __name__ == "__main__":
     for laplace in np.arange(limit_down, limit_up, step):
         for direction in np.arange(limit_down, limit_up, step):
             for magnitude in np.arange(limit_down, limit_up, step):
-                get_json(configs_path / f"cfg_{cfg_num}.json", laplace, direction, magnitude)
+                get_json(configs_path / f"cfg_{cfg_num:05}.json", laplace, direction, magnitude)
                 cfg_num += 1
     print(f"Created {cfg_num} configurations!")
