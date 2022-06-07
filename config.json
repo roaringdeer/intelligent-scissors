@@ -1,25 +1,21 @@
 {
-    "static": {
-        "laplace": 0.3,
-        "direction": 0.2,
-        "magnitude": 0.2,
-        "local": 0.1,
-        "inner": 0.1,
-        "outer": 0.1,
-        "laplace_kernels": [3, 5, 7],
-        "gaussian_kernel": 5,
-        "laplace_weights": [0.2, 0.3, 0.5]
-    },
-    "dynamic": {
-        "hist_std": 2,
-        "image_std": 1,
-        "distance_value": 3,
-        "history_capacity": 16,
-        "n_image_values": 255,
-        "n_magnitude_values": 255
-    },
-    "misc": {
-        "maximum_cost": 255,
-        "snap_scale": 3
-    }
+    "laplace_w": 0.3,
+    "direction_w": 0.2,
+    "magnitude_w": 0.2,
+    "local": 0.1,
+    "inner": 0.1,
+    "outer": 0.1,
+    "laplace_kernels": [
+        3,
+        5,
+        7
+    ],
+    "gaussian_kernel": 5,
+    "laplace_weights": [
+        0.2,
+        0.3,
+        0.5
+    ],
+    "maximum_cost": 255,
+    "snap_scale": 3
 }

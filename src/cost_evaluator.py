@@ -8,14 +8,15 @@ from .utilities import unfold, create_spatial_feats, flatten_first_dims
 class CostEvaluator:
     def __init__(self, laplace_kernels=None, laplace_weights=None, std=None,
                  laplace_w=None, direction_w=None, magnitude_w=None, maximum_cost=None, config_file='./config.json'):
-        with open(config_file, 'r') as f:
-            default_params = json.load(f)
 
-        std = std or default_params['static']['gaussian_kernel']
-        laplace_w = laplace_w or default_params['static']['laplace']
-        direction_w = direction_w or default_params['static']['direction']
-        magnitude_w = magnitude_w or default_params['static']['magnitude']
-        maximum_cost = maximum_cost or default_params['misc']['maximum_cost']
+        with open(config_file, 'r') as f:
+            config_params = json.load(f)
+
+        std = std or config_params['gaussian_kernel']
+        laplace_w = laplace_w or config_params['laplace_w']
+        direction_w = direction_w or config_params['direction_w']
+        magnitude_w = magnitude_w or config_params['magnitude_w']
+        maximum_cost = maximum_cost or config_params['maximum_cost']
 
         self.std = std
         self.maximum_cost = maximum_cost
@@ -23,8 +24,8 @@ class CostEvaluator:
         self.direction_w = direction_w * maximum_cost
         self.magnitude_w = magnitude_w * maximum_cost
 
-        self.laplace_weights = laplace_weights or default_params['static']['laplace_weights']
-        self.laplace_kernels = laplace_kernels or default_params['static']['laplace_kernels']
+        self.laplace_weights = laplace_weights or config_params['laplace_weights']
+        self.laplace_kernels = laplace_kernels or config_params['laplace_kernels']
 
         assert len(self.laplace_weights) == len(self.laplace_kernels), \
             "Sequences must have equal length."

@@ -21,13 +21,19 @@ def get_json(json_name, laplace, direction, magnitude):
         json.dump(jsondict, f, indent=4)
 
 if __name__ == "__main__":
+
+    limit_up = 5
+    limit_down = 0
+    step = 0.3
+
     data_path = Path("./data")
     configs_path = data_path / Path("configs")
     data_path.mkdir(exist_ok=True)
     configs_path.mkdir(exist_ok=True)
     cfg_num = 0
-    for laplace in np.arange(0, 1, 0.1):
-        for direction in np.arange(0, 1, 0.1):
-            for magnitude in np.arange(0, 1, 0.1):
+    for laplace in np.arange(limit_down, limit_up, step):
+        for direction in np.arange(limit_down, limit_up, step):
+            for magnitude in np.arange(limit_down, limit_up, step):
                 get_json(configs_path / f"cfg_{cfg_num}.json", laplace, direction, magnitude)
                 cfg_num += 1
+    print(f"Created {cfg_num} configurations!")

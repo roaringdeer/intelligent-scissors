@@ -76,3 +76,23 @@ def preprocess_image(image: np.array):
 def flatten_first_dims(x, n_dims=2):
     shape = x.shape
     return np.reshape(x, ((np.product(shape[:n_dims]),) + shape[n_dims:]))
+
+def eval_path(image, reference_image):
+    if image.shape != reference_image.shape:
+        raise ValueError(f"Wrong image and reference image shapes! Image shape: {image.shape}, reference image shape: {reference_image.shape}")
+    
+    x_size, y_size, _ = image.shape
+    hit = 0
+    miss = 0
+    for x in range(x_size):
+        for y in range(y_size):
+            if image[x, y, 0] != reference_image[x, y, 0]:
+                miss += 1
+            elif image[x, y, 1] != reference_image[x, y, 1]:
+                miss += 1
+            elif image[x, y, 2] != reference_image[x, y, 2]:
+                miss += 1
+            else:
+                hit += 1
+    score = miss/(hit + miss)
+    return score, hit, miss
