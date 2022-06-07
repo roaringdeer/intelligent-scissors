@@ -3,10 +3,8 @@ import cv2
 import argparse
 
 from cv2 import waitKey
-from src.costs import *
-from src.algorithm import  *
 
-from newsrc.pathfinder import Pathfinder
+from src.pathfinder import Pathfinder
 
 def get_args():
     parser = argparse.ArgumentParser('intelligent-scissors')
