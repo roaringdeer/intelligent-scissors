@@ -76,7 +76,3 @@ def preprocess_image(image: np.array):
 def flatten_first_dims(x, n_dims=2):
     shape = x.shape
     return np.reshape(x, ((np.product(shape[:n_dims]),) + shape[n_dims:]))
-
-
-def quadratic_kernel(x, size):
-    return 1 - (x / size) ** 2
