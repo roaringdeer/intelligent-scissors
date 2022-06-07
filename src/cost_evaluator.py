@@ -1,3 +1,4 @@
+from typing import Tuple
 import numpy as np
 import json
 import scipy
@@ -79,7 +80,7 @@ class CostEvaluator:
         return output
 
     @staticmethod
-    def get_direction_cost(image: np.array, eps=1e-6) -> np.array:
+    def get_direction_cost(image: np.array, eps: float = 1e-6) -> np.array:
         # calculate vectors perpendicular to gradients
         grads = np.stack([sobel_v(image), -sobel_h(image)])
         grads /= (np.linalg.norm(grads, axis=0) + eps)
@@ -100,7 +101,7 @@ class CostEvaluator:
         return total_cost
 
     @staticmethod
-    def gradient(image):
+    def gradient(image: np.array) -> Tuple[np.array, np.array]:
         dx = scipy.ndimage.filters.convolve1d(np.int32(image), np.array([-1, 0, 1]), 1)
         dy = scipy.ndimage.filters.convolve1d(np.int32(image), np.array([-1, 0, 1]), 0)
 
@@ -109,10 +110,3 @@ class CostEvaluator:
         orientation = np.vstack(([dy.T], [-dx.T])).T
         # orientation = (dy, -dx)
         return grad, orientation
-    
-    # Gradient Magnitude
-    def get_magnitude_cost(gradient, p, q):
-        if p[0] == q[0] or p[1] == q[1]:
-            return gradient[q[0]][q[1]]/np.sqrt(2)
-        else: 
-            return gradient[q[0]][q[1]]
